@@ -1,0 +1,345 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PLANÈTE PRO — Encyclopédie spatiale</title>
+<style>
+:root {
+  --bg:#050b19;
+  --panel:#101d35;
+  --blue:#39a9ff;
+  --text:#f1f6ff;
+  --muted:#a9bdd8;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Arial,sans-serif;line-height:1.65
+}
+header{
+  padding:35px 18px;text-align:center;
+  background:linear-gradient(135deg,#071a39,#102e58,#071226);
+  border-bottom:1px solid #24558a
+}
+header h1{font-size:clamp(32px,6vw,55px);margin:0;color:#65bdff}
+header p{color:#c1d9f5}
+nav{
+  display:flex;gap:8px;overflow-x:auto;padding:12px;
+  background:#09152a;position:sticky;top:0;z-index:5
+}
+nav button{
+  flex-shrink:0;background:#142a49;color:white;
+  border:1px solid #284d78;border-radius:20px;
+  padding:10px 15px;cursor:pointer
+}
+nav button.active,button:hover{background:#167bd1}
+main{max-width:1150px;margin:auto;padding:20px}
+section{margin:30px 0;scroll-margin-top:80px}
+h2{color:#69baff;font-size:28px}
+h3{color:#9bd2ff}
+p{color:#d8e5f6}
+.hero{
+  border-radius:20px;padding:28px;
+  background:linear-gradient(120deg,#102b50,#101b32);
+  border:1px solid #2a5789
+}
+.grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:16px
+}
+.card{
+  background:var(--panel);border:1px solid #243e62;
+  border-radius:16px;padding:16px;overflow:hidden
+}
+.card img{
+  width:100%;height:175px;object-fit:cover;
+  border-radius:10px;background:#071226
+}
+.card h3{margin-bottom:5px}
+.tag{
+  display:inline-block;padding:4px 9px;border-radius:20px;
+  background:#173b61;color:#8dccff;font-size:12px
+}
+.fact{color:#fff;font-weight:bold}
+.photo-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+  gap:12px
+}
+.photo-grid img{width:100%;height:180px;object-fit:cover;border-radius:12px}
+.photo-grid a{color:#8dccff;font-size:13px}
+button,.link{
+  cursor:pointer
+}
+.search{
+  width:100%;padding:14px;border-radius:12px;
+  border:1px solid #35577f;background:#0e1c32;color:white;
+  font-size:16px;margin:10px 0
+}
+footer{
+  text-align:center;padding:30px;color:#9bb2d0;
+  border-top:1px solid #203c60
+}
+a{color:#76c3ff}
+.hidden{display:none}
+.small{font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🪐 PLANÈTE PRO</h1>
+  <p>Explore l'espace, découvre les planètes et comprends l'Univers.</p>
+  <span class="tag">ENCYCLOPÉDIE SCIENTIFIQUE · COLLÈGE 6e À 3e</span>
+</header>
+
+<nav id="navigation">
+  <button class="active" data-target="accueil">Accueil</button>
+  <button data-target="soleil">Soleil</button>
+  <button data-target="terre">Terre</button>
+  <button data-target="atmosphere">Atmosphère</button>
+  <button data-target="lune">Lune</button>
+  <button data-target="planetes">Planètes</button>
+  <button data-target="univers">Univers</button>
+  <button data-target="nasa">NASA</button>
+</nav>
+
+<main>
+<section id="accueil">
+  <div class="hero">
+    <h2>Bienvenue dans l'Univers 🌌</h2>
+    <p>
+      Le système solaire est notre quartier dans l'espace.
+      Il comprend le Soleil, huit planètes, leurs satellites,
+      des planètes naines, des astéroïdes et des comètes.
+    </p>
+    <p>
+      Ce site propose des cours de sciences adaptés au collège,
+      des données astronomiques et des photographies provenant
+      des ressources publiques de la NASA.
+    </p>
+    <a href="#planetes">Découvrir les planètes ↓</a>
+  </div>
+  <h2>Explorer les grandes rubriques</h2>
+  <div class="grid">
+    <article class="card"><h3>☀️ Le Soleil</h3><p>Notre étoile, sa lumière et son énergie.</p></article>
+    <article class="card"><h3>🌍 La Terre</h3><p>Notre planète, ses océans et sa structure.</p></article>
+    <article class="card"><h3>🌫️ L'atmosphère</h3><p>Les couches de gaz qui entourent la Terre.</p></article>
+    <article class="card"><h3>🌕 La Lune</h3><p>Notre satellite naturel et ses phases.</p></article>
+    <article class="card"><h3>🪐 Les planètes</h3><p>Les huit mondes du système solaire.</p></article>
+    <article class="card"><h3>🌌 L'Univers</h3><p>Les étoiles, les galaxies et les trous noirs.</p></article>
+  </div>
+</section>
+
+<section id="soleil">
+  <h2>☀️ Le Soleil</h2>
+  <div class="grid">
+    <article class="card">
+      <h3>Qu'est-ce que le Soleil ?</h3>
+      <p>Le Soleil est une étoile située au centre du système solaire. Il est constitué principalement d'hydrogène et d'hélium.</p>
+    </article>
+    <article class="card">
+      <h3>Température</h3>
+      <p>Sa surface visible, appelée photosphère, atteint environ 5 500 °C. Son cœur atteint environ 15 millions de degrés.</p>
+    </article>
+    <article class="card">
+      <h3>Énergie solaire</h3>
+      <p>Dans son cœur, la fusion nucléaire transforme l'hydrogène en hélium et libère une immense quantité d'énergie.</p>
+    </article>
+    <article class="card">
+      <h3>Les éruptions solaires</h3>
+      <p>Le Soleil connaît des éruptions et des éjections de matière. Elles peuvent perturber les satellites et les communications terrestres.</p>
+    </article>
+  </div>
+  <h3>Les différentes parties du Soleil</h3>
+  <p>Le cœur, la zone radiative, la zone convective, la photosphère, la chromosphère et la couronne composent les principales régions du Soleil.</p>
+  <div id="photos-soleil" class="photo-grid"></div>
+  <p><a href="https://science.nasa.gov/sun/" target="_blank">En savoir plus sur le Soleil – NASA</a></p>
+</section>
+
+<section id="terre">
+  <h2>🌍 La Terre</h2>
+  <div class="grid">
+    <article class="card">
+      <h3>Notre planète</h3>
+      <p>La Terre est la troisième planète à partir du Soleil. Elle possède de l'eau liquide en surface et abrite la vie connue.</p>
+    </article>
+    <article class="card">
+      <h3>Les océans</h3>
+      <p>Environ 71 % de la surface terrestre est couverte par les océans. Ils jouent un rôle essentiel dans le climat.</p>
+    </article>
+    <article class="card">
+      <h3>Structure interne</h3>
+      <p>La Terre comprend une croûte, un manteau, un noyau externe liquide et un noyau interne solide.</p>
+    </article>
+    <article class="card">
+      <h3>Le champ magnétique</h3>
+      <p>Le mouvement du métal liquide dans le noyau externe contribue à produire le champ magnétique terrestre, qui protège en partie la planète du vent solaire.</p>
+    </article>
+    <article class="card">
+      <h3>Les saisons</h3>
+      <p>Les saisons sont principalement dues à l'inclinaison de l'axe de rotation de la Terre pendant sa révolution autour du Soleil.</p>
+    </article>
+    <article class="card">
+      <h3>Les plaques tectoniques</h3>
+      <p>La surface solide de la Terre est divisée en plaques qui se déplacent lentement. Leurs mouvements sont à l'origine de nombreux séismes et volcans.</p>
+    </article>
+  </div>
+  <div id="photos-terre" class="photo-grid"></div>
+  <p><a href="https://science.nasa.gov/earth/" target="_blank">En savoir plus sur la Terre – NASA</a></p>
+</section>
+
+<section id="atmosphere">
+  <h2>🌫️ L'atmosphère terrestre</h2>
+  <p>L'atmosphère est l'enveloppe de gaz qui entoure la Terre. Elle contient environ 78 % d'azote et 21 % d'oxygène, avec d'autres gaz en petites quantités.</p>
+  <div class="grid">
+    <article class="card"><h3>Troposphère</h3><p>Couche la plus basse. La plupart des phénomènes météorologiques s'y produisent.</p></article>
+    <article class="card"><h3>Stratosphère</h3><p>Elle contient la couche d'ozone, qui absorbe une grande partie des rayons ultraviolets du Soleil.</p></article>
+    <article class="card"><h3>Mésosphère</h3><p>Beaucoup de météores se consument dans cette région de l'atmosphère.</p></article>
+    <article class="card"><h3>Thermosphère</h3><p>On y observe notamment les aurores polaires. La Station spatiale internationale orbite dans cette région.</p></article>
+    <article class="card"><h3>Exosphère</h3><p>Région la plus externe, qui se fond progressivement dans l'espace.</p></article>
+    <article class="card"><h3>Effet de serre</h3><p>Certains gaz atmosphériques retiennent une partie de la chaleur. Cet effet naturel rend la Terre habitable, mais son renforcement par les activités humaines réchauffe le climat.</p></article>
+  </div>
+  <div id="photos-atmosphere" class="photo-grid"></div>
+  <p><a href="https://science.nasa.gov/earth/" target="_blank">Ressources NASA sur la Terre et son climat</a></p>
+</section>
+
+<section id="lune">
+  <h2>🌕 La Lune</h2>
+  <div class="grid">
+    <article class="card"><h3>Notre satellite</h3><p>La Lune est le satellite naturel de la Terre. Elle se trouve à environ 384 400 km de nous.</p></article>
+    <article class="card"><h3>Les phases lunaires</h3><p>Nouvelle Lune, premier quartier, pleine Lune et dernier quartier : les phases dépendent de la partie éclairée visible depuis la Terre.</p></article>
+    <article class="card"><h3>Les cratères</h3><p>La surface lunaire porte de nombreux cratères formés par des impacts d'astéroïdes et de météorites.</p></article>
+    <article class="card"><h3>Les missions Apollo</h3><p>En 1969, Apollo 11 a permis aux premiers humains de marcher sur la Lune.</p></article>
+  </div>
+  <div id="photos-lune" class="photo-grid"></div>
+  <p><a href="https://science.nasa.gov/moon/" target="_blank">En savoir plus sur la Lune – NASA</a></p>
+</section>
+
+<section id="planetes">
+  <h2>🪐 Les huit planètes</h2>
+  <p>Les distances sont des distances moyennes au Soleil. Les températures des géantes correspondent approximativement à leurs régions nuageuses.</p>
+  <div class="grid" id="planet-list"></div>
+  <p><a href="https://science.nasa.gov/solar-system/planets/" target="_blank">Guide officiel des planètes – NASA</a></p>
+</section>
+
+<section id="univers">
+  <h2>🌌 Découvrir l'Univers</h2>
+  <div class="grid">
+    <article class="card"><h3>Les étoiles</h3><p>Les étoiles sont des boules de gaz très chaudes qui produisent de l'énergie grâce à la fusion nucléaire. Le Soleil est une étoile.</p></article>
+    <article class="card"><h3>Les galaxies</h3><p>Une galaxie rassemble des étoiles, du gaz, de la poussière et de la matière noire, liés par la gravité. Notre galaxie s'appelle la Voie lactée.</p></article>
+    <article class="card"><h3>Les nébuleuses</h3><p>Ce sont de vastes nuages de gaz et de poussière. Certaines sont des lieux de naissance des étoiles.</p></article>
+    <article class="card"><h3>Les trous noirs</h3><p>Ce sont des régions de l'espace où la gravité est si intense que rien, pas même la lumière, ne peut s'en échapper au-delà de l'horizon des événements.</p></article>
+    <article class="card"><h3>Le Big Bang</h3><p>Le modèle du Big Bang décrit l'évolution de l'Univers depuis un état extrêmement chaud et dense il y a environ 13,8 milliards d'années.</p></article>
+    <article class="card"><h3>Les comètes</h3><p>Les comètes sont des corps composés de glace, de poussière et de roches. Près du Soleil, elles peuvent développer une chevelure et des queues.</p></article>
+  </div>
+  <div id="photos-univers" class="photo-grid"></div>
+  <p><a href="https://science.nasa.gov/universe/" target="_blank">Explorer l'Univers – NASA</a></p>
+</section>
+
+<section id="nasa">
+  <h2>🚀 Explorer les ressources NASA</h2>
+  <p>Recherche des photographies dans la bibliothèque publique d'images et de vidéos de la NASA.</p>
+  <input class="search" id="nasa-search" placeholder="Exemple : Mars, Saturne, galaxie, Soleil...">
+  <button id="search-button">Rechercher les photos</button>
+  <p class="small">Les résultats dépendent de la disponibilité de la bibliothèque NASA. Les images restent la propriété de leurs auteurs ou organismes respectifs : consulte les crédits associés.</p>
+  <div id="nasa-results" class="photo-grid"></div>
+  <p><a href="https://images.nasa.gov/" target="_blank">Ouvrir la bibliothèque officielle NASA</a></p>
+</section>
+
+</main>
+
+<footer>
+  <h3>PLANÈTE PRO 🪐</h3>
+  <p>Apprendre à comprendre l'espace et notre planète.</p>
+  <p class="small">Ressources : NASA Science et NASA Image and Video Library. PLANÈTE PRO est un projet indépendant et n'est pas un site officiel de la NASA.</p>
+</footer>
+
+<script>
+const planets = [
+ {name:"Mercure",type:"Rocheuse",distance:"57,9 millions de km",diameter:"4 879 km",year:"88 jours",temperature:"Environ −180 à 430 °C",fact:"La plus petite planète et la plus proche du Soleil.",query:"Mercury MESSENGER"},
+ {name:"Vénus",type:"Rocheuse",distance:"108,2 millions de km",diameter:"12 104 km",year:"225 jours",temperature:"Environ 465 °C",fact:"La planète la plus chaude à cause de son puissant effet de serre.",query:"Venus Magellan"},
+ {name:"Terre",type:"Rocheuse",distance:"149,6 millions de km",diameter:"12 742 km",year:"365,25 jours",temperature:"Environ 15 °C en moyenne",fact:"La seule planète connue qui abrite la vie.",query:"Earth Blue Marble"},
+ {name:"Mars",type:"Rocheuse",distance:"227,9 millions de km",diameter:"6 779 km",year:"687 jours",temperature:"Environ −65 °C en moyenne",fact:"La planète rouge, explorée par plusieurs robots.",query:"Mars NASA"},
+ {name:"Jupiter",type:"Géante gazeuse",distance:"778,3 millions de km",diameter:"139 820 km",year:"11,86 années",temperature:"Environ −110 °C au sommet des nuages",fact:"La plus grande planète du système solaire.",query:"Jupiter Juno NASA"},
+ {name:"Saturne",type:"Géante gazeuse",distance:"1,43 milliard de km",diameter:"116 460 km",year:"29,4 années",temperature:"Environ −140 °C au sommet des nuages",fact:"Célèbre pour son vaste système d'anneaux.",query:"Saturn Cassini NASA"},
+ {name:"Uranus",type:"Géante glacée",distance:"2,87 milliards de km",diameter:"50 724 km",year:"84 années",temperature:"Environ −195 °C",fact:"Son axe de rotation est fortement incliné.",query:"Uranus Voyager 2 NASA"},
+ {name:"Neptune",type:"Géante glacée",distance:"4,50 milliards de km",diameter:"49 244 km",year:"165 années",temperature:"Environ −200 °C",fact:"La plus éloignée du Soleil parmi les huit planètes.",query:"Neptune Voyager 2 NASA"}
+];
+
+const list=document.getElementById("planet-list");
+planets.forEach(p=>{
+ const card=document.createElement("article");
+ card.className="card";
+ const title=document.createElement("h3");
+ title.textContent=p.name;
+ const type=document.createElement("span");
+ type.className="tag";type.textContent=p.type;
+ const facts=document.createElement("p");
+ facts.innerHTML =
+  "<span class='fact'>Distance :</span> "+p.distance+
+  "<br><span class='fact'>Diamètre :</span> "+p.diameter+
+  "<br><span class='fact'>Année :</span> "+p.year+
+  "<br><span class='fact'>Température :</span> "+p.temperature;
+ const description=document.createElement("p");
+ description.textContent=p.fact;
+ card.append(title,type,facts,description);
+ list.appendChild(card);
+});
+
+document.querySelectorAll("nav button").forEach(btn=>{
+ btn.addEventListener("click",()=>{
+  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  document.getElementById(btn.dataset.target).scrollIntoView({behavior:"smooth"});
+ });
+});
+
+async function nasaPhotos(query,target,count=4){
+ const box=document.getElementById(target);
+ box.innerHTML="<p>Chargement des photos NASA...</p>";
+ try{
+  const url="https://images-api.nasa.gov/search?q="+encodeURIComponent(query)+"&media_type=image&page_size="+count;
+  const response=await fetch(url);
+  if(!response.ok) throw new Error("Réponse NASA indisponible");
+  const data=await response.json();
+  const items=data.collection.items||[];
+  box.innerHTML="";
+  items.slice(0,count).forEach(item=>{
+   const image=(item.links||[]).find(link=>link.rel==="preview");
+   const info=(item.data||[])[0]||{};
+   if(!image)return;
+   const figure=document.createElement("figure");
+   const img=document.createElement("img");
+   img.src=image.href;img.alt=info.title||query;img.loading="lazy";
+   const caption=document.createElement("figcaption");
+   caption.textContent=info.title||"Image NASA";
+   const credit=document.createElement("p");
+   credit.className="small";
+   credit.textContent=info.center||"NASA";
+   figure.append(img,caption,credit);
+   box.appendChild(figure);
+  });
+  if(!box.children.length)box.textContent="Aucune photo trouvée.";
+ }catch(error){
+  box.textContent="Impossible de charger les photos. Réessaie plus tard ou consulte images.nasa.gov.";
+ }
+}
+
+nasaPhotos("Sun Solar Dynamics Observatory","photos-soleil");
+nasaPhotos("Earth Blue Marble NASA","photos-terre");
+nasaPhotos("Earth atmosphere NASA","photos-atmosphere");
+nasaPhotos("Moon Apollo NASA","photos-lune");
+nasaPhotos("galaxies nebula James Webb NASA","photos-univers");
+
+document.getElementById("search-button").addEventListener("click",()=>{
+ const query=document.getElementById("nasa-search").value.trim();
+ if(query)nasaPhotos(query,"nasa-results",12);
+});
+document.getElementById("nasa-search").addEventListener("keydown",e=>{
+ if(e.key==="Enter")document.getElementById("search-button").click();
+});
+</script>
+</body>
+</html>
