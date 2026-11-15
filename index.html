@@ -58,6 +58,18 @@ p{color:#d8e5f6}
   border-radius:10px;background:#071226
 }
 .card h3{margin-bottom:5px}
+
+.planet-card{cursor:pointer;transition:transform .2s,border-color .2s}
+.planet-card:hover{transform:translateY(-4px);border-color:#55b7ff}
+.planet-card h3{cursor:pointer}
+.planet-details{position:fixed;inset:0;background:rgba(1,5,15,.94);display:none;align-items:center;justify-content:center;padding:18px;z-index:900}
+.planet-details.open{display:flex}
+.planet-details-panel{width:min(900px,96vw);max-height:90vh;overflow:auto;background:#0d1c34;border:1px solid #3678b7;border-radius:20px;padding:24px;box-shadow:0 0 45px #278bff33}
+.planet-details-panel h2{margin-top:0}
+.planet-details-panel .detail-close{float:right;border:1px solid #5caeff;background:#10294a;color:white;border-radius:50%;width:42px;height:42px;font-size:24px;cursor:pointer}
+.detail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.detail-item{background:#142945;border:1px solid #28496e;border-radius:12px;padding:12px}
+.detail-item strong{display:block;color:#83caff;margin-bottom:4px}
 .tag{
   display:inline-block;padding:4px 9px;border-radius:20px;
   background:#173b61;color:#8dccff;font-size:12px
@@ -270,6 +282,12 @@ a{color:#76c3ff}
 
 </main>
 
+<div class="planet-details" id="planet-details" role="dialog" aria-modal="true">
+  <div class="planet-details-panel">
+    <button class="detail-close" id="detail-close" aria-label="Fermer">×</button>
+    <div id="planet-detail-content"></div>
+  </div>
+</div>
 <div class="zoom-viewer" id="zoom-viewer" role="dialog" aria-modal="true" aria-label="Photo agrandie">
   <button class="zoom-close" id="zoom-close" aria-label="Fermer">×</button>
   <button class="zoom-prev" id="zoom-prev" aria-label="Image précédente">‹</button>
@@ -286,20 +304,23 @@ a{color:#76c3ff}
 
 <script>
 const planets = [
- {name:"Mercure",type:"Rocheuse",distance:"57,9 millions de km",diameter:"4 879 km",year:"88 jours",temperature:"Environ −180 à 430 °C",fact:"La plus petite planète et la plus proche du Soleil.",query:"Mercury MESSENGER"},
- {name:"Vénus",type:"Rocheuse",distance:"108,2 millions de km",diameter:"12 104 km",year:"225 jours",temperature:"Environ 465 °C",fact:"La planète la plus chaude à cause de son puissant effet de serre.",query:"Venus Magellan"},
- {name:"Terre",type:"Rocheuse",distance:"149,6 millions de km",diameter:"12 742 km",year:"365,25 jours",temperature:"Environ 15 °C en moyenne",fact:"La seule planète connue qui abrite la vie.",query:"Earth Blue Marble"},
- {name:"Mars",type:"Rocheuse",distance:"227,9 millions de km",diameter:"6 779 km",year:"687 jours",temperature:"Environ −65 °C en moyenne",fact:"La planète rouge, explorée par plusieurs robots.",query:"Mars NASA"},
- {name:"Jupiter",type:"Géante gazeuse",distance:"778,3 millions de km",diameter:"139 820 km",year:"11,86 années",temperature:"Environ −110 °C au sommet des nuages",fact:"La plus grande planète du système solaire.",query:"Jupiter Juno NASA"},
- {name:"Saturne",type:"Géante gazeuse",distance:"1,43 milliard de km",diameter:"116 460 km",year:"29,4 années",temperature:"Environ −140 °C au sommet des nuages",fact:"Célèbre pour son vaste système d'anneaux.",query:"Saturn Cassini NASA"},
- {name:"Uranus",type:"Géante glacée",distance:"2,87 milliards de km",diameter:"50 724 km",year:"84 années",temperature:"Environ −195 °C",fact:"Son axe de rotation est fortement incliné.",query:"Uranus Voyager 2 NASA"},
- {name:"Neptune",type:"Géante glacée",distance:"4,50 milliards de km",diameter:"49 244 km",year:"165 années",temperature:"Environ −200 °C",fact:"La plus éloignée du Soleil parmi les huit planètes.",query:"Neptune Voyager 2 NASA"}
+ {name:"Mercure",type:"Rocheuse",distance:"57,9 millions de km",diameter:"4 879 km",year:"88 jours",temperature:"Environ −180 à 430 °C",fact:"La plus petite planète et la plus proche du Soleil.",query:"Mercury MESSENGER",rotation:"58,6 jours terrestres",moons:"Aucun",atmosphere:"Exosphère très fine contenant notamment de l'oxygène, du sodium et de l'hydrogène",composition:"Planète rocheuse riche en métaux, avec un grand noyau de fer",gravity:"3,7 m/s²",exploration:"Mariner 10 et MESSENGER ; la mission BepiColombo est en route"},
+ {name:"Vénus",type:"Rocheuse",distance:"108,2 millions de km",diameter:"12 104 km",year:"225 jours",temperature:"Environ 465 °C",fact:"La planète la plus chaude à cause de son puissant effet de serre.",query:"Venus Magellan",rotation:"243 jours terrestres (rotation rétrograde)",moons:"Aucun",atmosphere:"Très dense, principalement du dioxyde de carbone, avec des nuages d'acide sulfurique",composition:"Monde rocheux avec un noyau métallique et un volcanisme important",gravity:"8,87 m/s²",exploration:"Sondes Venera, Magellan et missions en préparation"},
+ {name:"Terre",type:"Rocheuse",distance:"149,6 millions de km",diameter:"12 742 km",year:"365,25 jours",temperature:"Environ 15 °C en moyenne",fact:"La seule planète connue qui abrite la vie.",query:"Earth Blue Marble",rotation:"23 h 56 min",moons:"1 : la Lune",atmosphere:"Environ 78 % d'azote et 21 % d'oxygène",composition:"Croûte, manteau, noyau externe liquide et noyau interne solide",gravity:"9,81 m/s²",exploration:"Satellites d'observation, stations spatiales et missions lunaires"},
+ {name:"Mars",type:"Rocheuse",distance:"227,9 millions de km",diameter:"6 779 km",year:"687 jours",temperature:"Environ −65 °C en moyenne",fact:"La planète rouge, explorée par plusieurs robots.",query:"Mars NASA",rotation:"24 h 37 min",moons:"2 : Phobos et Déimos",atmosphere:"Très mince, principalement du dioxyde de carbone",composition:"Roches et poussières riches en oxydes de fer ; volcans géants et anciens lits de rivières",gravity:"3,71 m/s²",exploration:"Rovers Sojourner, Spirit, Opportunity, Curiosity et Perseverance"},
+ {name:"Jupiter",type:"Géante gazeuse",distance:"778,3 millions de km",diameter:"139 820 km",year:"11,86 années",temperature:"Environ −110 °C au sommet des nuages",fact:"La plus grande planète du système solaire.",query:"Jupiter Juno NASA",rotation:"Environ 9 h 56 min",moons:"Plus de 90 lunes connues, dont Io, Europe, Ganymède et Callisto",atmosphere:"Hydrogène et hélium ; bandes nuageuses et Grande Tache rouge",composition:"Géante principalement composée d'hydrogène et d'hélium, probablement avec un intérieur dense",gravity:"24,79 m/s² au niveau de référence",exploration:"Pioneer, Voyager, Galileo et la sonde Juno"},
+ {name:"Saturne",type:"Géante gazeuse",distance:"1,43 milliard de km",diameter:"116 460 km",year:"29,4 années",temperature:"Environ −140 °C au sommet des nuages",fact:"Célèbre pour son vaste système d'anneaux.",query:"Saturn Cassini NASA",rotation:"Environ 10 h 33 min",moons:"Plus de 140 lunes confirmées, dont Titan et Encelade",atmosphere:"Hydrogène et hélium avec des nuages d'ammoniac et d'eau",composition:"Géante gazeuse entourée d'anneaux faits de glace et de roches",gravity:"10,44 m/s² au niveau de référence",exploration:"Pioneer 11, Voyager et la mission Cassini-Huygens"},
+ {name:"Uranus",type:"Géante glacée",distance:"2,87 milliards de km",diameter:"50 724 km",year:"84 années",temperature:"Environ −195 °C",fact:"Son axe de rotation est fortement incliné.",query:"Uranus Voyager 2 NASA",rotation:"Environ 17 h 14 min (rétrograde)",moons:"29 lunes connues, dont Miranda, Ariel, Umbriel, Titania et Obéron",atmosphere:"Hydrogène, hélium et méthane, qui contribue à sa couleur bleu-vert",composition:"Géante glacée contenant des matériaux volatils comme l'eau, l'ammoniac et le méthane",gravity:"8,69 m/s²",exploration:"Survol de Voyager 2 en 1986"},
+ {name:"Neptune",type:"Géante glacée",distance:"4,50 milliards de km",diameter:"49 244 km",year:"165 années",temperature:"Environ −200 °C",fact:"La plus éloignée du Soleil parmi les huit planètes.",query:"Neptune Voyager 2 NASA",rotation:"Environ 16 h 6 min",moons:"16 lunes connues, dont Triton",atmosphere:"Hydrogène, hélium et méthane ; vents extrêmement rapides",composition:"Géante glacée avec un intérieur riche en eau, ammoniac et méthane",gravity:"11,15 m/s²",exploration:"Survol de Voyager 2 en 1989"}
 ];
 
 const list=document.getElementById("planet-list");
 planets.forEach(p=>{
  const card=document.createElement("article");
- card.className="card";
+ card.className="card planet-card";
+ card.setAttribute("role","button");
+ card.setAttribute("tabindex","0");
+ card.setAttribute("aria-label","Afficher toutes les informations sur "+p.name);
  const photo=document.createElement("img");
  photo.className="planet-photo";
  photo.alt="Photographie de "+p.name;
@@ -319,6 +340,8 @@ planets.forEach(p=>{
  const description=document.createElement("p");
  description.textContent=p.fact;
  card.append(photo,title,type,facts,description);
+ card.addEventListener("click",()=>showPlanetDetails(p));
+ card.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();showPlanetDetails(p);}});
  list.appendChild(card);
 });
 
@@ -374,6 +397,34 @@ document.addEventListener("keydown",e=>{
   if(e.key==="ArrowLeft")moveZoom(-1);
 });
 
+
+const detailModal=document.getElementById("planet-details");
+const detailContent=document.getElementById("planet-detail-content");
+function showPlanetDetails(p){
+ const rows=[
+  ["Type",p.type],["Distance moyenne au Soleil",p.distance],["Diamètre",p.diameter],
+  ["Durée d'une année",p.year],["Durée d'une rotation",p.rotation],
+  ["Température",p.temperature],["Gravité",p.gravity],["Satellites naturels",p.moons],
+  ["Atmosphère",p.atmosphere],["Composition et structure",p.composition],
+  ["Exploration spatiale",p.exploration],["À retenir",p.fact]
+ ];
+ detailContent.innerHTML="";
+ const heading=document.createElement("h2");heading.textContent="🪐 "+p.name;
+ const intro=document.createElement("p");intro.textContent="Fiche complète de la planète";
+ const grid=document.createElement("div");grid.className="detail-grid";
+ rows.forEach(([label,value])=>{
+   const item=document.createElement("div");item.className="detail-item";
+   const strong=document.createElement("strong");strong.textContent=label;
+   const text=document.createElement("span");text.textContent=value||"Information non disponible";
+   item.append(strong,text);grid.appendChild(item);
+ });
+ detailContent.append(heading,intro,grid);
+ detailModal.classList.add("open");document.body.style.overflow="hidden";
+}
+function closePlanetDetails(){detailModal.classList.remove("open");document.body.style.overflow="";}
+document.getElementById("detail-close").addEventListener("click",closePlanetDetails);
+detailModal.addEventListener("click",e=>{if(e.target===detailModal)closePlanetDetails();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closePlanetDetails();});
 async function loadPlanetPhotos(){
   for(const img of document.querySelectorAll(".planet-photo")){
     try{
