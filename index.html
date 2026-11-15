@@ -128,6 +128,7 @@ a{color:#76c3ff}
   <button data-target="atmosphere">Atmosphère</button>
   <button data-target="lune">Lune</button>
   <button data-target="planetes">Planètes</button>
+  <button data-target="exoplanetes">Exoplanètes</button>
   <button data-target="univers">Univers</button>
   <button data-target="nasa">NASA</button>
 </nav>
@@ -249,6 +250,20 @@ a{color:#76c3ff}
   <p>Les distances sont des distances moyennes au Soleil. Les températures des géantes correspondent approximativement à leurs régions nuageuses.</p>
   <div class="grid" id="planet-list"></div>
   <p><a href="https://science.nasa.gov/solar-system/planets/" target="_blank">Guide officiel des planètes – NASA</a></p>
+</section>
+
+<section id="exoplanetes">
+  <h2>🛰️ Les planètes au-delà du système solaire</h2>
+  <div class="hero">
+    <h3>Des mondes autour d'autres étoiles</h3>
+    <p>Une exoplanète est une planète qui tourne autour d'une autre étoile que le Soleil. Certaines sont rocheuses, d'autres géantes gazeuses ou glacées. Les astronomes en ont confirmé des milliers et en découvrent encore.</p>
+    <p>Cette rubrique consulte le catalogue public de la NASA et affiche les 100 exoplanètes les plus récemment confirmées dans les données disponibles. Le catalogue est mis à jour par les astronomes.</p>
+    <p class="small">Les distances et caractéristiques sont parfois inconnues ou encore incertaines. Une valeur absente n'est pas une valeur égale à zéro.</p>
+  </div>
+  <input class="search" id="exoplanet-search" placeholder="Rechercher une exoplanète ou son étoile...">
+  <p id="exoplanet-status" class="small" aria-live="polite">Chargement du catalogue des exoplanètes...</p>
+  <div class="grid" id="exoplanet-list"></div>
+  <p><a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener">Consulter le catalogue officiel NASA Exoplanet Archive</a></p>
 </section>
 
 <section id="univers">
@@ -473,6 +488,73 @@ async function nasaPhotos(query,target,count=4){
   box.textContent="Impossible de charger les photos. Réessaie plus tard ou consulte images.nasa.gov.";
  }
 }
+
+// Catalogue public NASA des exoplanètes (planètes situées hors du système solaire).
+let exoplanetData = [];
+const exoplanetList = document.getElementById("exoplanet-list");
+const exoplanetStatus = document.getElementById("exoplanet-status");
+const exoplanetSearch = document.getElementById("exoplanet-search");
+function formatExoplanet(value, unit) {
+  if (value === null || value === undefined || value === "") return "Non renseigné";
+  const number = Number(value);
+  return (Number.isFinite(number) ? number.toLocaleString("fr-FR", {maximumFractionDigits:3}) : value) + (unit ? " " + unit : "");
+}
+function renderExoplanets() {
+  const term = exoplanetSearch.value.trim().toLowerCase();
+  const filtered = exoplanetData.filter(p =>
+    String(p.pl_name || "").toLowerCase().includes(term) ||
+    String(p.hostname || "").toLowerCase().includes(term)
+  );
+  exoplanetList.innerHTML = "";
+  filtered.forEach(p => {
+    const card = document.createElement("article");
+    card.className = "card";
+    const title = document.createElement("h3");
+    title.textContent = "🪐 " + (p.pl_name || "Exoplanète sans nom");
+    const star = document.createElement("p");
+    star.innerHTML = "<strong>Étoile :</strong> ";
+    const starName = document.createElement("span");
+    starName.textContent = p.hostname || "Non renseignée";
+    star.appendChild(starName);
+    const details = document.createElement("p");
+    details.innerHTML =
+      "<strong>Découverte :</strong> " + formatExoplanet(p.disc_year, "") +
+      "<br><strong>Méthode :</strong> " + (p.discoverymethod || "Non renseignée") +
+      "<br><strong>Rayon :</strong> " + formatExoplanet(p.pl_rade, "rayon terrestre") +
+      "<br><strong>Masse :</strong> " + formatExoplanet(p.pl_bmasse, "masses terrestres") +
+      "<br><strong>Distance de la Terre :</strong> " + formatExoplanet(p.sy_dist, "parsecs") +
+      "<br><strong>Durée de l'orbite :</strong> " + formatExoplanet(p.pl_orbper, "jours");
+    const tag = document.createElement("span");
+    tag.className = "tag";
+    tag.textContent = "Catalogue NASA";
+    card.append(title,star,details,tag);
+    exoplanetList.appendChild(card);
+  });
+  if (!filtered.length) {
+    exoplanetList.textContent = exoplanetData.length ? "Aucun résultat pour cette recherche." : "";
+  }
+  if (exoplanetData.length) {
+    exoplanetStatus.textContent = filtered.length + " résultat(s) affiché(s) sur " + exoplanetData.length + " exoplanètes chargées.";
+  }
+}
+async function loadExoplanets() {
+  const query = "select pl_name,hostname,discoverymethod,disc_year,pl_rade,pl_bmasse,sy_dist,pl_orbper from ps where default_flag=1 order by disc_year desc";
+  const url = "https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=" + encodeURIComponent(query + " fetch first 100 rows only") + "&format=json";
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Catalogue indisponible");
+    const rows = await response.json();
+    if (!Array.isArray(rows)) throw new Error("Format de données inattendu");
+    exoplanetData = rows;
+    renderExoplanets();
+    exoplanetStatus.textContent = "Catalogue NASA chargé : " + rows.length + " exoplanètes récentes. Données susceptibles d'évoluer.";
+  } catch (error) {
+    exoplanetStatus.textContent = "Le catalogue ne répond pas pour le moment. Tu peux le consulter directement sur le site officiel NASA Exoplanet Archive.";
+    exoplanetList.innerHTML = "";
+  }
+}
+exoplanetSearch.addEventListener("input",renderExoplanets);
+loadExoplanets();
 
 nasaPhotos("Sun Solar Dynamics Observatory","photos-soleil");
 nasaPhotos("Earth Blue Marble NASA","photos-terre");
